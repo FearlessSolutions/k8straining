@@ -31,7 +31,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Post("/multiply", multiplicationHandler)
+	r.Post("/", multiplicationHandler)
 	err = http.ListenAndServe(":"+portString, r)
 	if err != nil {
 		log.Fatal(err)
