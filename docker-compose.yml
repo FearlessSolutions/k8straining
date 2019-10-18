@@ -1,0 +1,31 @@
+version: '3.4'
+services:
+  add:
+    build:
+      context: adder
+      dockerfile: Dockerfile
+    tty: true
+    container_name: add
+    ports: 
+      - "3000:3000"
+    environment: 
+      - PORT=3000
+    networks:
+      - add_nw
+  multiply:
+    build:
+      context: multiplier
+      dockerfile: Dockerfile
+    tty: true
+    container_name: multiply
+    ports: 
+      - "4000:4000"
+    environment: 
+      - PORT=4000
+    networks:
+      - multiply_nw
+networks: 
+  add_nw: 
+    driver: bridge
+  multiply_nw: 
+    driver: bridge
