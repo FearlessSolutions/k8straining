@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adder
+  template:
+    metadata:
+      labels:
+        app: adder
+    spec:
+      containers:
+        - name: adder
+          image: k8straining_add:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "3000"
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adder
+spec:
+  selector:
+    app: adder
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
