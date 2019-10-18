@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: adder
+  name: adder-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: adder
+      app: adder-pod
   template:
     metadata:
       labels:
-        app: adder
+        app: adder-pod
     spec:
       containers:
-        - name: adder
+        - name: adder-container
           image: k8straining_add:latest
           imagePullPolicy: IfNotPresent
           env:
@@ -26,11 +26,26 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: adder
+  name: adder-service
 spec:
   selector:
-    app: adder
+    app: adder-pod
   ports:
     - protocol: TCP
       port: 80
       targetPort: 3000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: adder-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /add
+        backend:
+          serviceName: adder-service
+          servicePort: 80
