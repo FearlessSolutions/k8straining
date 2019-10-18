@@ -40,8 +40,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: adder-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
@@ -67,7 +65,7 @@ spec:
     spec:
       containers:
         - name: multiplier-container
-          image: k8straining_add:latest
+          image: k8straining_multiply:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
@@ -94,8 +92,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: multiplier-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
