@@ -25,7 +25,20 @@ services:
       - ADDENDPOINT=add/add
     networks:
       - multiply_nw
+      - add_nw
+  router:
+    image: nginx:latest
+    ports:
+      - "9696:80"
+    volumes:
+      - "./router/nginx.conf:/etc/nginx/nginx.conf:ro"
+    networks:
+      - nginx_nw
+      - add_nw
+      - multiply_nw
 networks: 
+  nginx_nw:
+    driver: bridge
   add_nw: 
     driver: bridge
   multiply_nw: 
