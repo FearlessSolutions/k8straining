@@ -29,7 +29,7 @@ services:
   router:
     image: nginx:latest
     ports:
-      - "9696:80"
+      - "80:80"
     volumes:
       - "./router/nginx.conf:/etc/nginx/nginx.conf:ro"
     networks:

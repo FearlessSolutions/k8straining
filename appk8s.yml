@@ -1,0 +1,106 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adder-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adder-pod
+  template:
+    metadata:
+      labels:
+        app: adder-pod
+    spec:
+      containers:
+        - name: adder-container
+          image: k8straining_add:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "3000"
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adder-service
+spec:
+  selector:
+    app: adder-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: adder-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /add
+        backend:
+          serviceName: adder-service
+          servicePort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multiplier-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multiplier-pod
+  template:
+    metadata:
+      labels:
+        app: multiplier-pod
+    spec:
+      containers:
+        - name: multiplier-container
+          image: k8straining_add:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "4000"
+            - name: ADDENDPOINT
+              value: "adder-service"
+          ports:
+          - containerPort: 4000
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multiplier-service
+spec:
+  selector:
+    app: multiplier-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: multiplier-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /multiply
+        backend:
+          serviceName: multiplier-service
+          servicePort: 80
