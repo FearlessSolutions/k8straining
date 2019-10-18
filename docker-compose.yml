@@ -7,7 +7,7 @@ services:
     tty: true
     container_name: add
     ports: 
-      - "3000:3000"
+      - "5678:3000"
     environment: 
       - PORT=3000
     networks:
@@ -19,9 +19,10 @@ services:
     tty: true
     container_name: multiply
     ports: 
-      - "4000:4000"
+      - "6789:4000"
     environment: 
       - PORT=4000
+      - ADDENDPOINT=add/add
     networks:
       - multiply_nw
 networks: 

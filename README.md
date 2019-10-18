@@ -15,4 +15,5 @@ It's just a testbed to try out some kubernetes crap with.
 
 `docker-compose up --build`
 
-`curl -X POST -G 'http://localhost:3000/add' -d a=3 -d b=36`
+`curl -X POST -G 'http://localhost:5678/add' -d a=3 -d b=36`
+`curl -X POST -G 'http://localhost:6789/multiply' -d a=3 -d b=36`
