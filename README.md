@@ -13,12 +13,25 @@ It's just a testbed to try out some kubernetes crap with.
 
 
 
-## Usage
+# Usage
+
+## Docker
 
 `docker-compose up --build`
 
-`curl -X POST -G 'http://localhost:80/add' -d a=3 -d b=36`
-`curl -X POST -G 'http://localhost:80/multiply' -d a=3 -d b=36`
+```bash
+curl -X POST -G 'http://localhost:8080/add' -d a=3 -d b=36
+curl -X POST -G 'http://localhost:8080/multiply' -d a=3 -d b=36
+```
+
 
 ## Kubernetes:
 for local kubernetes setup, see instructions in `/localk8ssetup`
+
+`kubectl apply -f appk8s.yml`
+
+```bash
+curl -X POST -G 'http://localhost:80/add' -d a=3 -d b=36
+curl -X POST -G 'http://localhost:80/multiply' -d a=3 -d b=36
+```
+
