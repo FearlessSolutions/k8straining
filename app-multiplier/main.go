@@ -75,27 +75,18 @@ func minMax(a, b int) (int, int) {
 
 func multiply(a, b int, endpoint string) int {
 	// okay now you have the numbers. what do you do now?
-	// check if they share a sign, then do multiplication. if they don't, flip the result
-	if math.Signbit(float64(a)) == math.Signbit(float64(b)) {
-		aAbs := abs(a)
-		bAbs := abs(b)
-		min, max := minMax(aAbs, bAbs)
-		//Send a request to  /add: looping over min, max times
-		out := 0
-		for i := 0; i <= min; i++ {
-			// TODO: this needs to be a call to another http endpoint
-			out = out + max
-		}
-		return out
-	}
+	// Figure out smaller number, to make fewest network calls needed
 	aAbs := abs(a)
 	bAbs := abs(b)
 	min, max := minMax(aAbs, bAbs)
 	//Send a request to  /add: looping over min, max times
 	out := 0
-	for i := 0; i <= min; i++ {
+	for i := 1; i <= min; i++ {
 		// TODO: this needs to be a call to another http endpoint
 		out = out + max
 	}
-	return -out
+	if math.Signbit(float64(a)) != math.Signbit(float64(b)) {
+		return -out
+	}
+	return out
 }
