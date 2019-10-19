@@ -71,7 +71,7 @@ spec:
             - name: PORT
               value: "4000"
             - name: ADDENDPOINT
-              value: "adder-service"
+              value: "http://adder-service/add"
           ports:
           - containerPort: 4000
             protocol: TCP
