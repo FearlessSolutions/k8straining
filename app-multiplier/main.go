@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 
@@ -45,15 +47,19 @@ func multiplicationHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(aString, bString)
 	a, err := strconv.Atoi(aString)
 	if err != nil {
-		http.Error(w, "a must be an int", 500)
+		http.Error(w, "a must be an int", 422)
 		return
 	}
 	b, err := strconv.Atoi(bString)
 	if err != nil {
-		http.Error(w, "b must be an int", 500)
+		http.Error(w, "b must be an int", 422)
 		return
 	}
-	c := multiply(a, b, os.Getenv("ADDENDPOINT"))
+	c, err := multiply(a, b, os.Getenv("ADDENDPOINT"))
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 	log.Println(c)
 	w.Write([]byte(fmt.Sprintf("%d", c)))
 }
@@ -73,7 +79,7 @@ func minMax(a, b int) (int, int) {
 	return b, a
 }
 
-func multiply(a, b int, endpoint string) int {
+func multiply(a, b int, endpoint string) (int, error) {
 	// okay now you have the numbers. what do you do now?
 	// Figure out smaller number, to make fewest network calls needed
 	aAbs := abs(a)
@@ -82,11 +88,29 @@ func multiply(a, b int, endpoint string) int {
 	//Send a request to  /add: looping over min, max times
 	out := 0
 	for i := 1; i <= min; i++ {
-		// TODO: this needs to be a call to another http endpoint
-		out = out + max
+		// call addition endpoint: add max to current out
+		resp, err := http.PostForm(endpoint,
+			url.Values{"a": {strconv.Itoa(out)}, "b": {strconv.Itoa(max)}})
+		if err != nil {
+			log.Println("Error calling Addition Endpoint: %w", err)
+			return 0, fmt.Errorf("Error calling Addition Endpoint: %w", err)
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Println("Error reading Addition Endpoint response: %w", err)
+			return 0, fmt.Errorf("Error reading Addition Endpoint response: %w", err)
+		}
+		bs := string(body)
+		//set out to output of response body
+		out, err = strconv.Atoi(bs)
+		if err != nil {
+			log.Println("Error converting Addition Endpoint response: %w", err)
+			return 0, fmt.Errorf("Error converting Addition Endpoint response: %w", err)
+		}
 	}
 	if math.Signbit(float64(a)) != math.Signbit(float64(b)) {
-		return -out
+		return -out, nil
 	}
-	return out
+	return out, nil
 }

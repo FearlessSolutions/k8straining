@@ -22,7 +22,7 @@ services:
       - "6789:4000"
     environment: 
       - PORT=4000
-      - ADDENDPOINT=add/add
+      - ADDENDPOINT=http://add:3000/add
     networks:
       - multiply_nw
       - add_nw
