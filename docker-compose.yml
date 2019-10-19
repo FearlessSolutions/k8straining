@@ -2,7 +2,7 @@ version: '3.4'
 services:
   add:
     build:
-      context: adder
+      context: app-adder
       dockerfile: Dockerfile
     tty: true
     container_name: add
@@ -14,7 +14,7 @@ services:
       - add_nw
   multiply:
     build:
-      context: multiplier
+      context: app-multiplier
       dockerfile: Dockerfile
     tty: true
     container_name: multiply
