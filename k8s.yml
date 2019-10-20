@@ -22,11 +22,11 @@ spec:
             - name: PORT
               value: "3000"
           ports:
-            - containerPort: 3000
+            - containerPort: 80
           readinessProbe:
             httpGet:
               path: /health
-              port: 3000
+              port: 80
             initialDelaySeconds: 3
             periodSeconds: 3
 ---
@@ -40,7 +40,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 80
   # type: NodePort
 ---
 apiVersion: apps/v1
@@ -68,11 +68,11 @@ spec:
             - name: ADDENDPOINT
               value: "http://adder-service/add"
           ports:
-            - containerPort: 4000
+            - containerPort: 80
           readinessProbe:
             httpGet:
               path: /health
-              port: 4000
+              port: 80
             initialDelaySeconds: 3
             periodSeconds: 3
 ---
@@ -86,7 +86,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 4000
+      targetPort: 80
   # type: NodePort
 ---
 apiVersion: extensions/v1beta1
