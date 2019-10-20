@@ -23,7 +23,7 @@ services:
       - "6789:80"
     environment: 
       - PORT=80
-      - ADDENDPOINT=http://add:3000/add
+      - ADDENDPOINT=http://add/add
     networks:
       - nginx_nw
       - add_mult
@@ -37,7 +37,7 @@ services:
       - "7896:80"
     environment: 
       - PORT=80
-      - NEST2ENDPOINT=http://nest2:8765/nest1
+      - NEST2ENDPOINT=http://nest2/nest1
     networks:
       - nginx_nw
       - nest_nw

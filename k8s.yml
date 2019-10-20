@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
-              value: "3000"
+              value: "80"
           ports:
             - containerPort: 80
           readinessProbe:
@@ -64,7 +64,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
-              value: "4000"
+              value: "80"
             - name: ADDENDPOINT
               value: "http://adder-service/add"
           ports:
