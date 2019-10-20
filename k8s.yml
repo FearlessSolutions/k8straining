@@ -151,8 +151,8 @@ spec:
     spec:
       containers:
         - name: multiplier-container
-          image: k8straining_multiply:latest
-          # image: us.gcr.io/fearless-sandbox-2019/k8straining_multiply:latest
+          image: k8straining_nest2:latest
+          # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest2:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
