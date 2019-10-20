@@ -28,7 +28,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Post("/nest2", nestHandler)
+	r.Get("/nest2", nestHandler)
 	r.Get("/health", healthHandler)
 	err = http.ListenAndServe(":"+portString, r)
 	if err != nil {
