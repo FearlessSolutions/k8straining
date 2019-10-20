@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -55,13 +56,21 @@ func nestHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+	if resp.StatusCode != 200 {
+		log.Printf("Error calling Nest2 Endopoint: %v", err.Error())
+		http.Error(w, err.Error(), resp.StatusCode)
+		return
+	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("Error reading response: %v", err.Error())
 		http.Error(w, err.Error(), 500)
+		return
 	}
-	log.Println("Response: ", string(body))
-	w.Write(body)
+	bs := string(body)
+	responseString := fmt.Sprint("Response from 2: ", bs)
+	log.Println(responseString)
+	w.Write([]byte(responseString))
 	w.WriteHeader(200)
 }

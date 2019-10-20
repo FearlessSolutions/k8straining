@@ -37,7 +37,7 @@ services:
       - "7896:80"
     environment: 
       - PORT=80
-      - NEST2ENDPOINT=http://nest2/nest1
+      - NEST2ENDPOINT=http://nest2/nest2
     networks:
       - nginx_nw
       - nest_nw
