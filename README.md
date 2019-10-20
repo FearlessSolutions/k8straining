@@ -31,7 +31,6 @@ for local kubernetes setup, see instructions in `/localk8ssetup`
 `kubectl apply -f appk8s.yml`
 
 ```bash
-curl -X POST -G 'http://localhost:80/add' -d a=3 -d b=36
-curl -X POST -G 'http://localhost:80/multiply' -d a=3 -d b=36
+curl -X POST -G 'http://localhost/add' -d a=3 -d b=36 -H"Content-Length:0"
+curl -X POST -G 'http://localhost/multiply' -d a=3 -d b=36 -H"Content-Length:0"
 ```
-
