@@ -1,4 +1,4 @@
-module examble.com/m/v2
+module main
 
 go 1.13
 
