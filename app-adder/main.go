@@ -26,10 +26,17 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Post("/add", additionHandler)
+	r.Get("/health", healthHandler)
 	err = http.ListenAndServe(":"+portString, r)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+//respond with 200 to health checks
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(200)
+	w.Write([]byte("ok"))
 }
 
 //HTTP handler adding two integear parameters from url routing parameters
