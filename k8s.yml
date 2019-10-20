@@ -41,19 +41,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: adder-ingress
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /add
-        backend:
-          serviceName: adder-service
-          servicePort: 80
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -99,15 +87,20 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 4000
+  type: NodePort
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: multiplier-ingress
+  name: fanout-ingress
 spec:
   rules:
   - http:
       paths:
+      - path: /add
+        backend:
+          serviceName: adder-service
+          servicePort: 80
       - path: /multiply
         backend:
           serviceName: multiplier-service
