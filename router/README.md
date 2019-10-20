@@ -1,3 +1,3 @@
 - This router is for path-based ingress routing. 
-- It is only used for incoming routing. No internal routing is handling. 
+- It is only used for incoming routing. No internal routing is handeled. 
 - This router is only used for docker-compose. Kubernetes will handle its own ingress
