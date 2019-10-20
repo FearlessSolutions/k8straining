@@ -18,6 +18,6 @@ FROM alpine
 WORKDIR /
 COPY --from=builder /app/app /app
 
-EXPOSE 4000
+EXPOSE 80
 
 ENTRYPOINT ["./app"]
