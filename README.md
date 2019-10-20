@@ -34,6 +34,7 @@ for local kubernetes setup, see instructions in `/localk8ssetup`
 ```bash
 curl -X POST -G 'http://localhost/add' -d a=3 -d b=36 -H"Content-Length:0"
 curl -X POST -G 'http://localhost/multiply' -d a=3 -d b=36 -H"Content-Length:0"
+curl http://localhost/nest1
 ```
 
 ### Deploy to GKE
