@@ -32,7 +32,7 @@ services:
       context: app-nest1
       dockerfile: Dockerfile
     tty: true
-    container_name: multiply
+    container_name: nest1
     ports: 
       - "7896:80"
     environment: 
@@ -46,7 +46,7 @@ services:
       context: app-nest2
       dockerfile: Dockerfile
     tty: true
-    container_name: multiply
+    container_name: nest2
     ports: 
       - "8765:80"
     environment: 
