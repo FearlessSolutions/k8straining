@@ -179,7 +179,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  # type: NodePort
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
