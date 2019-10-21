@@ -22,6 +22,7 @@ It's just a testbed to try out some kubernetes crap with.
 ```bash
 curl -X POST -G 'http://localhost:8080/add' -d a=3 -d b=36
 curl -X POST -G 'http://localhost:8080/multiply' -d a=3 -d b=36
+curl localhost:8080/nest1
 ```
 
 
@@ -33,6 +34,7 @@ for local kubernetes setup, see instructions in `/localk8ssetup`
 ```bash
 curl -X POST -G 'http://localhost/add' -d a=3 -d b=36 -H"Content-Length:0"
 curl -X POST -G 'http://localhost/multiply' -d a=3 -d b=36 -H"Content-Length:0"
+curl http://localhost/nest1
 ```
 
 ### Deploy to GKE

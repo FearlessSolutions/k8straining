@@ -20,13 +20,13 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
-              value: "3000"
+              value: "80"
           ports:
-            - containerPort: 3000
+            - containerPort: 80
           readinessProbe:
             httpGet:
               path: /health
-              port: 3000
+              port: 80
             initialDelaySeconds: 3
             periodSeconds: 3
 ---
@@ -40,7 +40,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 80
   # type: NodePort
 ---
 apiVersion: apps/v1
@@ -64,15 +64,15 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
-              value: "4000"
+              value: "80"
             - name: ADDENDPOINT
               value: "http://adder-service/add"
           ports:
-            - containerPort: 4000
+            - containerPort: 80
           readinessProbe:
             httpGet:
               path: /health
-              port: 4000
+              port: 80
             initialDelaySeconds: 3
             periodSeconds: 3
 ---
@@ -86,7 +86,99 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 4000
+      targetPort: 80
+  # type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest1-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nest1-pod
+  template:
+    metadata:
+      labels:
+        app: nest1-pod
+    spec:
+      containers:
+        - name: nest1-container
+          image: k8straining_nest1:latest
+          # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest1:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "80"
+            - name: NEST2ENDPOINT
+              value: "http://nest2-service/nest2"
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nest1-service
+spec:
+  selector:
+    app: nest1-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  # type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest2-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nest2-pod
+  template:
+    metadata:
+      labels:
+        app: nest2-pod
+    spec:
+      containers:
+        - name: multiplier-container
+          image: k8straining_nest2:latest
+          # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest2:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "80"
+            - name: WHATTOSAY
+              value: "banana"
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nest2-service
+spec:
+  selector:
+    app: nest2-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
   # type: NodePort
 ---
 apiVersion: extensions/v1beta1
@@ -104,4 +196,8 @@ spec:
       - path: /multiply
         backend:
           serviceName: multiplier-service
+          servicePort: 80
+      - path: /nest1
+        backend:
+          serviceName: nest1-service
           servicePort: 80

@@ -14,10 +14,10 @@ ENV CGO_ENABLED 0
 RUN go build -o app
 
 # Begin Deployed Stage:
-FROM scratch
+FROM alpine
 WORKDIR /
 COPY --from=builder /app/app /app
 
-EXPOSE 3000
+EXPOSE 80
 
 ENTRYPOINT ["./app"]
