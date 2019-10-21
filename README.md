@@ -41,7 +41,7 @@ curl http://localhost/nest1
 
 1) Follow the instructions [here](https://cloud.google.com/kubernetes-engine/docs/quickstart) for configuring your shell and deploying / authenticating a cluster
 2) Ensure you are using the correct [context](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/) to address the remote cluster (I use [kubectx](https://github.com/ahmetb/kubectx) and [kube_ps1](https://github.com/jonmosco/kube-ps1) to make this easy)
-3) Edit the `k8s.yml` file: change the `image:` entries to use the remote registries, and enable `type: NodePort` on the services
+3) Edit the `k8s.yml` file: change the `image:` entries to use the remote registries.
 4) Deploy the YAML: 
 ```bash
 kubectl apply -f k8s.yml
