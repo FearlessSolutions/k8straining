@@ -2,7 +2,7 @@
 
 1) [docker desktop kubernetes](https://www.docker.com/products/kubernetes) (this is the method supported in this repo)
 2) [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/)
-3) [k3s](https://k3s.io/)
+
 
 ## Setup:
 1) follow the steps for whichever you choose for installing and starting your cluster
