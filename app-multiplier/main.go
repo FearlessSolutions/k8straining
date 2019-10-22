@@ -56,6 +56,15 @@ func multiplicationHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "b must be an int", 422)
 		return
 	}
+
+	// don't multiply too much....
+	for _, num := range [2]int{a, b} {
+		if num > 10000 {
+			http.Error(w, "hey dummy, don't multiply that much", 422)
+			return
+		}
+	}
+
 	c, err := multiply(a, b, os.Getenv("ADDENDPOINT"))
 	if err != nil {
 		http.Error(w, err.Error(), 500)
