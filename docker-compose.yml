@@ -1,5 +1,15 @@
 version: '3.4'
 services:
+  frontend:
+    build:
+      context: app-frontend
+      dockerfile: Dockerfile
+    tty: true
+    container_name: frontend
+    ports:
+      - "6987:80"
+    networks:
+      - nginx_nw
   add:
     build:
       context: app-adder
