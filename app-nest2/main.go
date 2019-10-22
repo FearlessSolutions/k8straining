@@ -27,19 +27,13 @@ func main() {
 	}
 
 	r := chi.NewRouter()
+	r.Use(middleware.Heartbeat("/health"))
 	r.Use(middleware.Logger)
 	r.Get("/nest2", nestHandler)
-	r.Get("/health", healthHandler)
 	err = http.ListenAndServe(":"+portString, r)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-//respond with 200 to health checks
-func healthHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(200)
-	w.Write([]byte("ok"))
 }
 
 func nestHandler(w http.ResponseWriter, r *http.Request) {
