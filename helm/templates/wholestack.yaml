@@ -1,0 +1,226 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adder-deployment
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: adder-pod
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: adder-pod
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: adder-container
+          image: {{ .Values.image.prefix }}_add:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "80"
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adder-service
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  selector:
+    app: adder-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: {{ .Values.exposedServiceType }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multiplier-deployment
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: multiplier-pod
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: multiplier-pod
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: multiplier-container
+          image: {{ .Values.image.prefix }}_multiply:latest
+          # image: us.gcr.io/fearless-sandbox-2019/{{ .Values.image.prefix }}_multiply:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "80"
+            - name: ADDENDPOINT
+              value: "http://adder-service/add"
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multiplier-service
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  selector:
+    app: multiplier-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: {{ .Values.exposedServiceType }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest1-deployment
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nest1-pod
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: nest1-pod
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: nest1-container
+          image: {{ .Values.image.prefix }}_nest1:latest
+          # image: us.gcr.io/fearless-sandbox-2019/{{ .Values.image.prefix }}_nest1:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "80"
+            - name: NEST2ENDPOINT
+              value: "http://nest2-service/nest2"
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nest1-service
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  selector:
+    app: nest1-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: {{ .Values.exposedServiceType }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest2-deployment
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nest2-pod
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: nest2-pod
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: multiplier-container
+          image: {{ .Values.image.prefix }}_nest2:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "80"
+            - name: WHATTOSAY
+              value: {{ .Values.nest2Response }}
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nest2-service
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  selector:
+    app: nest2-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fanout-ingress
+  labels:
+{{ include "helm.labels" . | indent 4 }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /add
+        backend:
+          serviceName: adder-service
+          servicePort: 80
+      - path: /multiply
+        backend:
+          serviceName: multiplier-service
+          servicePort: 80
+      - path: /nest1
+        backend:
+          serviceName: nest1-service
+          servicePort: 80

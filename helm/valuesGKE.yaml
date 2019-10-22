@@ -1,0 +1,14 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+image:
+  prefix: us.gcr.io/fearless-sandbox-2019/k8straining
+
+exposedServiceType: NodePort
+
+nest2Response: banana
+
+nameOverride: ""
+fullnameOverride: ""
