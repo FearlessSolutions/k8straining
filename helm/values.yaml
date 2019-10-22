@@ -1,0 +1,15 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  prefix: k8straining
+
+exposedServiceType: ClusterIP
+
+nest2Response: banana
+
+nameOverride: ""
+fullnameOverride: ""
