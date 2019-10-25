@@ -2,15 +2,16 @@
 
 This project is a teastbed for kubernetes training. instead of building out something annoying as hell, and then trying to force that into a microservice architecture, and then from there trying to put cool stuff on top, I figured "let's build something dumb and easy".
 
-This project implements integer math. It adds integers at /add, it multiplies intigers at /multiply (by making multiple calls to `/add`). It subtracts, it divides. 
 
-It may even, if we work hard enough, do powers. And maybe even have a (really shitty) ui. 
+This project consists of 4 microservices: add, multiply, nest1, and nest2
+- Add: takes 2 integers, adds them together, and then returns the result
+- Multiply: takes 2 integers, checks which is smaller, calls Add enough times with the larger to get the correct result, decides positive or negative, and returns the result
+- Nest1: Gets Nest2, then returns "Nest2 responded: [nest2's response]"
+- Nest2: Returns the contents of an environment variable
 
-The goal is just to have a lot of services that talk to eachother, and don't actually do anything too complicated. It barely even matters if it's right. 
+The goal is just to have a lot of services that talk to eachother, and don't actually do anything too complicated. It barely even matters if it's right. This can then be used for testing kubernetes assumtions and systems, as well as a testbed for new systems (Helm, service mesh, virtualkubelt). 
 
-It's just a testbed to try out some kubernetes crap with. 
-
-
+If you want to use this to test any of those additional complexities, please create a fork of this repo. 
 
 
 # Usage
