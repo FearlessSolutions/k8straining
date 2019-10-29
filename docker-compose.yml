@@ -1,5 +1,18 @@
 version: '3.4'
 services:
+  frontend:
+    build:
+      context: app-react
+      dockerfile: reference-app/Dockerfile
+    tty: true
+    container_name: frontend
+    ports:
+      - "3000:80"
+    networks:
+      - nginx_nw
+    volumes:
+      - './app-react/reference-app:/reference-app'
+      - './app-react/reference-app/node_modules'
   add:
     build:
       context: app-adder
