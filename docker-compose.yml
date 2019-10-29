@@ -5,10 +5,6 @@ services:
       context: app-adder
       dockerfile: Dockerfile
     image: fearlesstech/k8straining_add:latest
-    tty: true
-    container_name: add
-    ports: 
-      - "5678:80"
     environment: 
       - PORT=80
     networks:
@@ -19,10 +15,6 @@ services:
       context: app-multiplier
       dockerfile: Dockerfile
     image: fearlesstech/k8straining_multiply:latest
-    tty: true
-    container_name: multiply
-    ports: 
-      - "6789:80"
     environment: 
       - PORT=80
       - ADDENDPOINT=http://add/add
@@ -34,10 +26,6 @@ services:
       context: app-nest1
       dockerfile: Dockerfile
     image: fearlesstech/k8straining_nest1:latest
-    tty: true
-    container_name: nest1
-    ports: 
-      - "7896:80"
     environment: 
       - PORT=80
       - NEST2ENDPOINT=http://nest2/nest2
@@ -49,10 +37,6 @@ services:
       context: app-nest2
       dockerfile: Dockerfile
     image: fearlesstech/k8straining_nest2:latest
-    tty: true
-    container_name: nest2
-    ports: 
-      - "8765:80"
     environment: 
       - PORT=80
       - WHATTOSAY=banana
