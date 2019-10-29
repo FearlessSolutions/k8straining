@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+
+  app:
+    container_name: reference-app
+    build:
+      context: ./reference-app
+      dockerfile: Dockerfile
+    volumes:
+      - './reference-app:/reference-app'
+      - '/reference-app/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+
+  cypress:
+    image: "cypress/included:3.2.0"
+    depends_on:
+      - app
+    environment:
+      - CYPRESS_baseUrl=http://reference-app:3000
+    working_dir: /testing
+    volumes:
+      - ./testing:/testing
+
+  jest:
+    image: react_app:latest
+    container_name: jest
+    environment:
+      - CI=true
+    command: ["npm", "test"]
+    volumes:
+      - './reference-app:/reference-app'
+      - '/reference-app/node_modules'
+
+  storybook:
+    image: react_app:latest
+    container_name: storybook
+    command: ["npm", "run", "storybook"]
+    depends_on:
+      - app
+    ports:
+      - '9009:9009'
+    volumes:
+      - './reference-app:/reference-app'
+      - '/reference-app/node_modules'
