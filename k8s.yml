@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: adder-container
-          image: k8straining_add:latest
+          image: fearlesstech/k8straining_add:latest
           # image: us.gcr.io/fearless-sandbox-2019/k8straining_add:latest
           imagePullPolicy: IfNotPresent
           env:
@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
         - name: multiplier-container
-          image: k8straining_multiply:latest
+          image: fearlesstech/k8straining_multiply:latest
           # image: us.gcr.io/fearless-sandbox-2019/k8straining_multiply:latest
           imagePullPolicy: IfNotPresent
           env:
@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
         - name: nest1-container
-          image: k8straining_nest1:latest
+          image: fearlesstech/k8straining_nest1:latest
           # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest1:latest
           imagePullPolicy: IfNotPresent
           env:
@@ -151,7 +151,7 @@ spec:
     spec:
       containers:
         - name: multiplier-container
-          image: k8straining_nest2:latest
+          image: fearlesstech/k8straining_nest2:latest
           # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest2:latest
           imagePullPolicy: IfNotPresent
           env:

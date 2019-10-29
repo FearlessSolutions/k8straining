@@ -14,6 +14,7 @@ services:
     build:
       context: app-adder
       dockerfile: Dockerfile
+    image: fearlesstech/k8straining_add:latest
     tty: true
     container_name: add
     ports: 
@@ -27,6 +28,7 @@ services:
     build:
       context: app-multiplier
       dockerfile: Dockerfile
+    image: fearlesstech/k8straining_multiply:latest
     tty: true
     container_name: multiply
     ports: 
@@ -41,6 +43,7 @@ services:
     build:
       context: app-nest1
       dockerfile: Dockerfile
+    image: fearlesstech/k8straining_nest1:latest
     tty: true
     container_name: nest1
     ports: 
@@ -55,6 +58,7 @@ services:
     build:
       context: app-nest2
       dockerfile: Dockerfile
+    image: fearlesstech/k8straining_nest2:latest
     tty: true
     container_name: nest2
     ports: 
