@@ -4,10 +4,7 @@ services:
     build:
       context: app-frontend
       dockerfile: Dockerfile
-    tty: true
-    container_name: frontend
-    ports:
-      - "6987:80"
+    image: fearlesstech/k8straining_frontend:latest
     networks:
       - nginx_nw
   add:

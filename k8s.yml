@@ -196,7 +196,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: k8straining_frontend:latest
+          image: fearlesstech/k8straining_frontend:latest
           # image: us.gcr.io/fearless-sandbox-2019/k8straining_frontend:latest
           imagePullPolicy: IfNotPresent
           # env:
