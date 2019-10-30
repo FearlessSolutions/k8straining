@@ -18,7 +18,7 @@ commands:
     steps:
       - deploy: 
           name: Docker Login
-          command: echo $k8straining_DOCKER_PWD | docker login -u $k8straining_DOCKER_LOGIN --password-stdin
+          command: docker login -u $k8straining_DOCKER_LOGIN -p $k8straining_DOCKER_PWD
 
   dockerpush:
     parameters:
