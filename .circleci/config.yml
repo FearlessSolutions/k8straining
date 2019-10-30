@@ -25,7 +25,7 @@ commands:
 
 jobs:
   buildAndDeploy:
-    exector: default
+    executor: default
     steps:
       - dockercomposebuild
       - dockerpush:
@@ -41,8 +41,7 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - buildAndDeploy
-    # - buildAndDeploy:
-    #     filters:
-    #       branches:
-    #         only: master
+    - buildAndDeploy:
+        filters:
+          branches:
+            only: master
