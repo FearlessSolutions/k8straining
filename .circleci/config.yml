@@ -29,13 +29,13 @@ jobs:
     steps:
       - dockercomposebuild
       - dockerpush:
-          container: fearlesstech/k8straining_add:latest
+          container: fearlesstech/k8straining_add
       - dockerpush:
-          container: fearlesstech/k8straining_multiply:latest
+          container: fearlesstech/k8straining_multiply
       - dockerpush:
-          container: fearlesstech/k8straining_nest1:latest
+          container: fearlesstech/k8straining_nest1
       - dockerpush:
-          container: fearlesstech/k8straining_nest2:latest
+          container: fearlesstech/k8straining_nest2
 
 workflows:
   version: 2
