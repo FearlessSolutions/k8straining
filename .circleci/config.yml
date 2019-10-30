@@ -1,0 +1,48 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: circleci/golang:1.13-stretch
+
+commands:
+  dockercomposebuild:
+    steps:
+      - checkout
+      - setup_remote_docker
+      - deploy:
+          name: Docker Compose Build
+          command: |
+            docker-compose build
+  dockerpush:
+    parameters:
+      container:
+        type: string
+    steps:
+      - deploy:
+          name: Push << parameters.container >> container to Dockerhub
+          command: docker push << << parameters.container >>:latest
+
+jobs:
+  buildAndDeploy:
+    exector: default
+    steps:
+      - dockercomposebuild
+      - dockerpush:
+          container: fearlesstech/k8straining_add:latest
+      - dockerpush:
+          container: fearlesstech/k8straining_multiply:latest
+      - dockerpush:
+          container: fearlesstech/k8straining_nest1:latest
+      - dockerpush:
+          container: fearlesstech/k8straining_nest2:latest
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - buildAndDeploy
+    # - buildAndDeploy:
+    #     filters:
+    #       branches:
+    #         only: master
