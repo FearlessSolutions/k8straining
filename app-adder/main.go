@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -22,6 +23,8 @@ func main() {
 	if err != nil {
 		log.Fatal("PORT must parse to an int")
 	}
+
+	time.Sleep(3 * time.Second)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Heartbeat("/health"))
