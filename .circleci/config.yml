@@ -21,7 +21,7 @@ commands:
     steps:
       - deploy:
           name: Push << parameters.container >> container to Dockerhub
-          command: docker push << << parameters.container >>:latest
+          command: docker push << parameters.container >>:latest
 
 jobs:
   buildAndDeploy:
