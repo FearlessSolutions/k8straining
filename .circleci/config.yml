@@ -49,6 +49,7 @@ workflows:
   deploy:
     jobs:
     - buildAndDeploy:
+        context: k8straining
         filters:
           branches:
             only: master
