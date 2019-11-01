@@ -15,6 +15,7 @@ RUN go build -o app
 
 # Begin Deployed Stage:
 FROM alpine
+RUN apk add ca-certificates
 WORKDIR /
 COPY --from=builder /app/app /app
 
