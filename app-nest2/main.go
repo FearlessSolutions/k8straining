@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -25,6 +26,8 @@ func main() {
 	if whatToSay == "" {
 		log.Fatal("WHATTOSAY must be set")
 	}
+
+	time.Sleep(3 * time.Second)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Heartbeat("/health"))
