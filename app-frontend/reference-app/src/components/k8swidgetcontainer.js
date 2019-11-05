@@ -54,7 +54,7 @@ export default function K8WidgetContainer(props) {
     }
 
     function reqNest(){
-        let desiredUrl = `http://localhost:8080/nest1`;
+        let desiredUrl = `/nest1`;
         setCount(nestCount);
         setUrl(desiredUrl);
     }
