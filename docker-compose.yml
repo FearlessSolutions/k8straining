@@ -1,5 +1,12 @@
 version: '3.4'
 services:
+  frontend:
+    build:
+      context: app-frontend/reference-app
+      dockerfile: Dockerfile.prod
+    image: fearlesstech/k8straining_frontend:latest
+    networks:
+      - nginx_nw
   add:
     build:
       context: app-adder

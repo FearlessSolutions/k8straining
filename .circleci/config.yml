@@ -43,6 +43,8 @@ jobs:
           container: fearlesstech/k8straining_nest1
       - dockerpush:
           container: fearlesstech/k8straining_nest2
+      - dockerpush:
+          container: fearlesstech/k8straining_frontend
 
 workflows:
   version: 2

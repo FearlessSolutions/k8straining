@@ -1,0 +1,26 @@
+FROM node:10.16-alpine as builder
+
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+FROM nginx:1.17-alpine
+
+COPY nginx.conf /etc/nginx/conf.d
+
+## Remove default nginx website, and put in ours
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+RUN chown -R nginx:nginx /usr/share/nginx/html/
+
+EXPOSE 80
+
+ENTRYPOINT ["nginx","-g","daemon off;"]
