@@ -1,43 +1,65 @@
 import React, { useState, useEffect }  from 'react';
-import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 export default function K8WidgetContainer(props) {
 
     const [results, setResults] = useState([]);
-    const [nestActive, setNestActive] = useState(false);
-    const [nestInterval, setNestInterval] = useState(13);
+    const [nestCount, setNestCount] = useState(13);
     const [addA, setAddA] = useState(3);
     const [addB, setAddB] = useState(7);
     const [multiplyA, setMultiplyA] = useState(5);
     const [multiplyB, setMultiplyB] = useState(15);
-    const [url, setUrl] = useState(
-        '',
-    );
+    const [url, setUrl] = useState('');
+    const [count, setCount] = useState(0);
+
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (url !== '') {
+        const fetchData = () => {
+            if (url !== '' && count>0) {
                 let newResults = results.slice();
                 newResults.unshift(`REQUESTING FROM:${url}`);
-                let fr = await fetch("https://hn.algolia.com/api/v1/search?query=redux");
-                newResults.unshift(`RESULT is: ${addA + addB}`);
-                setResults(newResults);
+                fetch(url, {
+                    method: url.indexOf('nest') > -1 ? 'get': 'post'
+                }).then(function(response) {
+                    return response.text();
+                }).then(function(data) {
+                    console.log(data);
+                    newResults.unshift(`RESULT is: ${data}`);
+                    setResults(newResults);
+                    sleep(350).then(() => {
+                        const newCount = count - 1;
+                        setCount(count - 1);
+                        if (newCount <= 0) {
+                            setUrl('')
+                        }
+                    })
+;                });
+
             }
         };
         fetchData();
-    }, [url]);
+    }, [url, count]);
 
     function reqAdd() {
-        let desiredUrl = `http://localhost:3000/add/?a=${addA}&b=${addB}`;
+        let desiredUrl = `/add?a=${addA}&b=${addB}`;
+        setCount(1);
         setUrl(desiredUrl);
     }
 
     function reqMultiply() {
-        let desiredUrl = `http://localhost:3000/multiply/?a=${multiplyA}&b=${multiplyB}`;
+        let desiredUrl = `/multiply?a=${multiplyA}&b=${multiplyB}`;
+        setCount(1);
         setUrl(desiredUrl);
     }
+
+    function reqNest(){
+        let desiredUrl = `http://localhost:8080/nest1`;
+        setCount(nestCount);
+        setUrl(desiredUrl);
+    }
+
+
 
     return (
         <div className='container'>
@@ -50,20 +72,15 @@ export default function K8WidgetContainer(props) {
 
                         </Card.Header>
                         <Card.Body>
-                            Send requests to the nest endpoint every
-                            <input className={"col-sm-2"} value={nestInterval} onChange={(e) =>{setNestInterval(e.target.value)}}/> microseconds
+                            Send
+                            <input className={"col-sm-2"} value={nestCount} onChange={(e) =>{setNestCount(e.target.value)}}/>
+                            requests to the nest endpoint
                             <br/>
-                            NEST interval is: {nestInterval}
-                            <br/>
-                            {nestActive ?
-                                <Button onClick={() => setNestActive(!nestActive)} variant="primary" size="md" active>
-                                    Deactivate Nest
-                                </Button>
-                                :
-                                <Button onClick={() => setNestActive(!nestActive)} variant="primary" size="md">
-                                    Activate Nest
-                                </Button>
-                            }
+                            <Button onClick={() => reqNest()} variant="primary" size="md" active>
+                                Send Requests to Nest
+                            </Button>
+
+
                         </Card.Body>
                     </Card>
                     <Card>
@@ -96,7 +113,7 @@ export default function K8WidgetContainer(props) {
                     </Card>
                 </div>
                 <div className="col">
-                    <h2>RESULTS</h2>
+                    <h2>RESULTS <Button onClick={()=>setResults([])}>Clear</Button></h2>
                     <ul>
                         {results.map((result) => <li>{result}</li>)}
                     </ul>
@@ -105,4 +122,9 @@ export default function K8WidgetContainer(props) {
         </div>
     )
 }
+
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+};
+
 
