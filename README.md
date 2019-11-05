@@ -1,5 +1,5 @@
 <!-- Add project logo here -->
-<p align="center"><img src="https://fearless.tech/static/brand/logo_lockup.png"></p>
+<p align="center"><img height="200" src="https://fearless.tech/static/brand/logo_lockup.png"></p>
 
 <h1 align="center">Kubernetes Training</h1>
 
