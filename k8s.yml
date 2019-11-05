@@ -1,139 +1,139 @@
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: adder-deployment
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: adder-pod
-  template:
-    metadata:
-      labels:
-        app: adder-pod
-    spec:
-      containers:
-        - name: adder-container
-          image: fearlesstech/k8straining_add:latest
-          # image: us.gcr.io/fearless-sandbox-2019/k8straining_add:latest
-          imagePullPolicy: Always
-          env:
-            - name: PORT
-              value: "80"
-          ports:
-            - containerPort: 80
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: adder-service
-spec:
-  selector:
-    app: adder-pod
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: NodePort
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: multiplier-deployment
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: multiplier-pod
-  template:
-    metadata:
-      labels:
-        app: multiplier-pod
-    spec:
-      containers:
-        - name: multiplier-container
-          image: fearlesstech/k8straining_multiply:latest
-          # image: us.gcr.io/fearless-sandbox-2019/k8straining_multiply:latest
-          imagePullPolicy: Always
-          env:
-            - name: PORT
-              value: "80"
-            - name: ADDENDPOINT
-              value: "http://adder-service/add"
-          ports:
-            - containerPort: 80
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: multiplier-service
-spec:
-  selector:
-    app: multiplier-pod
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: NodePort
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nest1-deployment
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: nest1-pod
-  template:
-    metadata:
-      labels:
-        app: nest1-pod
-    spec:
-      containers:
-        - name: nest1-container
-          image: fearlesstech/k8straining_nest1:latest
-          # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest1:latest
-          imagePullPolicy: Always
-          env:
-            - name: PORT
-              value: "80"
-            - name: NEST2ENDPOINT
-              value: "http://nest2-service/nest2"
-          ports:
-            - containerPort: 80
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nest1-service
-spec:
-  selector:
-    app: nest1-pod
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: NodePort
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: adder-deployment
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: adder-pod
+#   template:
+#     metadata:
+#       labels:
+#         app: adder-pod
+#     spec:
+#       containers:
+#         - name: adder-container
+#           image: fearlesstech/k8straining_add:latest
+#           # image: us.gcr.io/fearless-sandbox-2019/k8straining_add:latest
+#           imagePullPolicy: Always
+#           env:
+#             - name: PORT
+#               value: "80"
+#           ports:
+#             - containerPort: 80
+#           readinessProbe:
+#             httpGet:
+#               path: /health
+#               port: 80
+#             initialDelaySeconds: 3
+#             periodSeconds: 3
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: adder-service
+# spec:
+#   selector:
+#     app: adder-pod
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: NodePort
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: multiplier-deployment
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: multiplier-pod
+#   template:
+#     metadata:
+#       labels:
+#         app: multiplier-pod
+#     spec:
+#       containers:
+#         - name: multiplier-container
+#           image: fearlesstech/k8straining_multiply:latest
+#           # image: us.gcr.io/fearless-sandbox-2019/k8straining_multiply:latest
+#           imagePullPolicy: Always
+#           env:
+#             - name: PORT
+#               value: "80"
+#             - name: ADDENDPOINT
+#               value: "http://adder-service/add"
+#           ports:
+#             - containerPort: 80
+#           readinessProbe:
+#             httpGet:
+#               path: /health
+#               port: 80
+#             initialDelaySeconds: 3
+#             periodSeconds: 3
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: multiplier-service
+# spec:
+#   selector:
+#     app: multiplier-pod
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: NodePort
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nest1-deployment
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: nest1-pod
+#   template:
+#     metadata:
+#       labels:
+#         app: nest1-pod
+#     spec:
+#       containers:
+#         - name: nest1-container
+#           image: fearlesstech/k8straining_nest1:latest
+#           # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest1:latest
+#           imagePullPolicy: Always
+#           env:
+#             - name: PORT
+#               value: "80"
+#             - name: NEST2ENDPOINT
+#               value: "http://nest2-service/nest2"
+#           ports:
+#             - containerPort: 80
+#           readinessProbe:
+#             httpGet:
+#               path: /health
+#               port: 80
+#             initialDelaySeconds: 3
+#             periodSeconds: 3
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nest1-service
+# spec:
+#   selector:
+#     app: nest1-pod
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -150,7 +150,7 @@ spec:
         app: nest2-pod
     spec:
       containers:
-        - name: multiplier-container
+        - name: nest2-container
           image: fearlesstech/k8straining_nest2:latest
           # image: us.gcr.io/fearless-sandbox-2019/k8straining_nest2:latest
           imagePullPolicy: Always
@@ -167,87 +167,87 @@ spec:
               port: 80
             initialDelaySeconds: 3
             periodSeconds: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nest2-service
-spec:
-  selector:
-    app: nest2-pod
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend-pod
-  template:
-    metadata:
-      labels:
-        app: frontend-pod
-    spec:
-      containers:
-        - name: frontend-container
-          image: fearlesstech/k8straining_frontend:latest
-          # image: us.gcr.io/fearless-sandbox-2019/k8straining_frontend:latest
-          imagePullPolicy: IfNotPresent
-          # env:
-          ports:
-            - containerPort: 80
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend-service
-spec:
-  selector:
-    app: frontend-pod
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: NodePort
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: fanout-ingress
-spec:
-  # GKE Default backend
-  backend:
-    serviceName: frontend-service
-    servicePort: 80
-  rules:
-  - http:
-      paths:
-      - path: /add
-        backend:
-          serviceName: adder-service
-          servicePort: 80
-      - path: /multiply
-        backend:
-          serviceName: multiplier-service
-          servicePort: 80
-      - path: /nest1
-        backend:
-          serviceName: nest1-service
-          servicePort: 80
-      #nginx default backend:
-      - path:
-        backend:
-          serviceName: frontend-service
-          servicePort: 80
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nest2-service
+# spec:
+#   selector:
+#     app: nest2-pod
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: frontend-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: frontend-pod
+#   template:
+#     metadata:
+#       labels:
+#         app: frontend-pod
+#     spec:
+#       containers:
+#         - name: frontend-container
+#           image: fearlesstech/k8straining_frontend:latest
+#           # image: us.gcr.io/fearless-sandbox-2019/k8straining_frontend:latest
+#           imagePullPolicy: IfNotPresent
+#           # env:
+#           ports:
+#             - containerPort: 80
+#           readinessProbe:
+#             httpGet:
+#               path: /health
+#               port: 80
+#             initialDelaySeconds: 3
+#             periodSeconds: 3
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-service
+# spec:
+#   selector:
+#     app: frontend-pod
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: NodePort
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: fanout-ingress
+# spec:
+#   # GKE Default backend
+#   backend:
+#     serviceName: frontend-service
+#     servicePort: 80
+#   rules:
+#   - http:
+#       paths:
+#       - path: /add
+#         backend:
+#           serviceName: adder-service
+#           servicePort: 80
+#       - path: /multiply
+#         backend:
+#           serviceName: multiplier-service
+#           servicePort: 80
+#       - path: /nest1
+#         backend:
+#           serviceName: nest1-service
+#           servicePort: 80
+#       #nginx default backend:
+#       - path:
+#         backend:
+#           serviceName: frontend-service
+#           servicePort: 80
