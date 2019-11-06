@@ -140,7 +140,7 @@ kind: Deployment
 metadata:
   name: nest2-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: nest2-pod
